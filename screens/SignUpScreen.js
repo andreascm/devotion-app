@@ -35,13 +35,11 @@ export default class SignUpScreen extends Component {
 			inputValid = false
 		}
 
-		if (!Util.authentication.isUsernameValid(this.state.username)) {
-			inputValid = false
-		}
-
-		if (inputValid) {
-			this.handleSubmit()
-		}
+		Util.authentication.isUsernameValid(this.state.username, (result) => {
+			if (result && inputValid) {
+				this.handleSubmit()
+			}
+		})
 	}
 
 	handleSubmit = () => {
@@ -49,7 +47,8 @@ export default class SignUpScreen extends Component {
 			if (error) {
 				console.log(error)
 			} else {
-				this.props.navigator.push(Router.getRoute('planner'))
+				Util.authentication.addUser(this.state.email, this.state.username)
+				this.props.navigator.push(Router.getRoute('main'))
 			}
 		})
 	}
@@ -88,12 +87,12 @@ export default class SignUpScreen extends Component {
 					returnKeyType='go'
 					floatingLabelEnabled={true}
 					allowFontScaling={true}
-					onSubmitEditing={this.handleSubmit.bind(this)}
+					onSubmitEditing={this.handleCheck.bind(this)}
 					onChangeText={(password) => this.setState({password})}
 					value={this.state.password} />
 				<Button
 					raised
-					onPress={this.handleSubmit.bind(this)}
+					onPress={this.handleCheck.bind(this)}
 					text='Submit'
 					style={{
 						container: {

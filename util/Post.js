@@ -1,37 +1,41 @@
 import Firebase from  './Firebase'
 
-module.exports = class Plan extends Firebase {
+module.exports = class Post extends Firebase {
 	constructor() {
 		super()
 	}
 
-	createPlan(name, startDate, endDate, clusters) {
+	createPost(author, date, title, text, music) {
 		if (this.auth.currentUser !== null) {
-			var ref = this.db.ref('plan/' + this.auth.currentUser.uid).push()
+			var ref = this.db.ref('post').push()
 			ref.set({
-				name: name,
-				startDate: startDate,
-				endDate: endDate,
-				clusters: clusters
+				author: author,
+				date: date,
+				title: title,
+				text: text,
+				music: music,
+				owner: this.auth.currentUser.uid
 			})
 		}
 	}
 
-	editPlan(name, startDate, endDate, clusters, key) {
+	editPost(author, date, title, text, music, key) {
 		if (this.auth.currentUser !== null) {
-			var ref = this.db.ref('plan/' + this.auth.currentUser.uid + '/' + key)
+			var ref = this.db.ref('post/' + key)
 			ref.set({
-				name: name,
-				startDate: startDate,
-				endDate: endDate,
-				clusters: clusters
+				author: author,
+				date: date,
+				title: title,
+				text: text,
+				music: music,
+				owner: this.auth.currentUser.uid
 			})
 		}
 	}
 
-	getAllPlan(cb) {
+	getAllPost(cb) {
 		if (this.auth.currentUser !== null) {
-			this.db.ref('plan/' + this.auth.currentUser.uid).once('value')
+			this.db.ref('post').once('value')
 			.then(function(snapshot) {
 				var result = {}
 
@@ -52,9 +56,9 @@ module.exports = class Plan extends Firebase {
 		}
 	}
 
-	getPlanById(id, cb) {
+	getPostById(id, cb) {
 		if (this.auth.currentUser !== null) {
-			this.db.ref('plan/' + this.auth.currentUser.uid + '/' + id).once('value')
+			this.db.ref('post/' + id).once('value')
 			.then(function(snapshot) {
 				cb(null, snapshot.val())
 			})
@@ -66,7 +70,7 @@ module.exports = class Plan extends Firebase {
 
 	addChildAddedListener(cb) {
 		if (this.auth.currentUser !== null) {
-			this.db.ref('plan/' + this.auth.currentUser.uid).on('child_added', function(data) {
+			this.db.ref('post').on('child_added', function(data) {
 				cb(data.key, data.val())
 			})
 		}
@@ -74,7 +78,7 @@ module.exports = class Plan extends Firebase {
 
 	addChildChangedListener(cb) {
 		if (this.user !== null) {
-			this.db.ref('plan/' + this.auth.currentUser.uid).on('child_changed', function(data) {
+			this.db.ref('post').on('child_changed', function(data) {
 				cb(data.key, data.val())
 			})
 		}
@@ -82,7 +86,7 @@ module.exports = class Plan extends Firebase {
 
 	addChildRemovedListener(cb) {
 		if (this.auth.currentUser !== null) {
-			this.db.ref('plan/' + this.auth.currentUser.uid).on('child_removed', function(data) {
+			this.db.ref('post').on('child_removed', function(data) {
 				cb(data.key, data.val())
 			})
 		}
@@ -90,7 +94,7 @@ module.exports = class Plan extends Firebase {
 
 	removeAllListeners() {
 		if (this.auth.currentUser !== null) {
-			this.db.ref('plan/' + this.auth.currentUser.uid).off()
+			this.db.ref('post').off()
 		}
 	}
 }

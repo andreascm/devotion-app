@@ -1,11 +1,11 @@
 var firebase = require("firebase"),
 	config = {
-		apiKey: "AIzaSyAE5a3xL-r6xoekrPOOxj_TDHFaXTymkow",
-	    authDomain: "life-trip-3d638.firebaseapp.com",
-	    databaseURL: "https://life-trip-3d638.firebaseio.com",
-	    projectId: "life-trip-3d638",
-	    storageBucket: "life-trip-3d638.appspot.com",
-	    messagingSenderId: "664244402786"
+		apiKey: "AIzaSyCUx6R11tvDcnaRMbNwLEJpLdoOtJ1D99E",
+	    authDomain: "devotion-16c22.firebaseapp.com",
+	    databaseURL: "https://devotion-16c22.firebaseio.com",
+	    projectId: "devotion-16c22",
+	    storageBucket: "devotion-16c22.appspot.com",
+	    messagingSenderId: "826195465935"
 	}
 firebase.initializeApp(config)
 
@@ -16,5 +16,6 @@ module.exports = class Firebase {
 		this.user = null
 		this.db = this.firebase.database()
 		this.auth = this.firebase.auth()
+		this.storage = this.firebase.storage()
 	}
 }

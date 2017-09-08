@@ -24,7 +24,11 @@ export default class SignInScreen extends Component {
 			if (error) {
 				console.log(error)
 			} else {
-				this.props.navigator.push(Router.getRoute('planner'))
+				Util.authentication.isAdmin(this.state.email, (result) => {
+					this.props.navigator.push(Router.getRoute('main', {
+						isAdmin: result
+					}))
+				})
 			}
 		})
 	}
